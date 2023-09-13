@@ -7,7 +7,7 @@ namespace PolicyDetails_WebApplication.Models
 {
     public class ErrorResponse
     {
-        public string Status { get; set; }
+        public int Status { get; set; }
         public string Message { get; set; }
     }
 }

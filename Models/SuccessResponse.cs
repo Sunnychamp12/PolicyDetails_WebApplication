@@ -5,10 +5,14 @@ using System.Web;
 
 namespace PolicyDetails_WebApplication.Models
 {
+    public class GetSuccessResponse
+    {
+        public int Status { get; set; }
+        public List<PolicyData> PolicyDetails { get; set; }
+    }
     public class SuccessResponse
     {
-        public string Status { get; set; }
+        public int Status { get; set; }
         public string Message { get; set; }
-        public List<PolicyData_1> PolicyDetails { get; set; }
     }
 }

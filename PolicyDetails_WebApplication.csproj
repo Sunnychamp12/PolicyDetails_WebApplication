@@ -206,7 +206,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Model1.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Models\Enums.cs" />
+    <Compile Include="Models\Common.cs" />
     <Compile Include="Models\ErrorResponse.cs" />
     <Compile Include="Models\PolicyData_1.cs" />
     <Compile Include="Models\SuccessResponse.cs" />
