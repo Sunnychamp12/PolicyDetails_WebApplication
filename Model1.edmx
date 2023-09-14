@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="SunnyDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="SunnyDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="__EFMigrationsHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
@@ -58,6 +58,22 @@
           <Property Name="ContractStatusCode" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="PolicyStatus" Type="nvarchar(max)" Nullable="false" />
           <Property Name="ETLDate" Type="datetime2" Precision="7" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'SunnyDB.dbo.PolicyTransaction' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="PolicyTransaction">
+          <Key>
+            <PropertyRef Name="PolicyNo" />
+            <PropertyRef Name="CustomerId" />
+            <PropertyRef Name="PremiumDate" />
+          </Key>
+          <Property Name="PolicyNo" Type="int" Nullable="false" />
+          <Property Name="CustomerId" Type="int" Nullable="false" />
+          <Property Name="PremiumAmount" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="PremiumDate" Type="datetime" Nullable="false" />
+          <Property Name="PolicyStatus" Type="nvarchar" MaxLength="10" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="EditDate" Type="datetime" />
         </EntityType>
         <EntityType Name="tbl_Category">
           <Key>
@@ -150,6 +166,18 @@ warning 6002: The table/view 'SunnyDB.dbo.VW_Test' does not have a primary key d
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_PolicyTransaction_PolicyData">
+          <End Role="PolicyData" Type="Self.PolicyData" Multiplicity="1" />
+          <End Role="PolicyTransaction" Type="Self.PolicyTransaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PolicyData">
+              <PropertyRef Name="PolicyKey" />
+            </Principal>
+            <Dependent Role="PolicyTransaction">
+              <PropertyRef Name="PolicyNo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Function Name="FN_TEST" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="paramId" Type="int" Mode="In" />
           <ReturnType>
@@ -166,6 +194,11 @@ warning 6002: The table/view 'SunnyDB.dbo.VW_Test' does not have a primary key d
         <Function Name="SP_GetPolicyDetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CustoemerCode" Type="nvarchar" Mode="In" />
         </Function>
+        <Function Name="SP_GetPolicyTransaction" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="PolicyNo" Type="int" Mode="In" />
+          <Parameter Name="StartDate" Type="date" Mode="In" />
+          <Parameter Name="EndDate" Type="date" Mode="In" />
+        </Function>
         <EntityContainer Name="SunnyDBModelStoreContainer">
           <EntitySet Name="__EFMigrationsHistory" EntityType="Self.__EFMigrationsHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="City_Mas" EntityType="Self.City_Mas" Schema="dbo" store:Type="Tables" />
@@ -176,6 +209,17 @@ warning 6002: The table/view 'SunnyDB.dbo.VW_Test' does not have a primary key d
           <EntitySet Name="tbl_Items" EntityType="Self.tbl_Items" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_OrderDetails" EntityType="Self.tbl_OrderDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_OrderList" EntityType="Self.tbl_OrderList" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PolicyTransaction" EntityType="Self.PolicyTransaction" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [PolicyTransaction].[PolicyNo] AS [PolicyNo], 
+    [PolicyTransaction].[CustomerId] AS [CustomerId], 
+    [PolicyTransaction].[PremiumAmount] AS [PremiumAmount], 
+    [PolicyTransaction].[PremiumDate] AS [PremiumDate], 
+    [PolicyTransaction].[PolicyStatus] AS [PolicyStatus], 
+    [PolicyTransaction].[CreatedDate] AS [CreatedDate], 
+    [PolicyTransaction].[EditDate] AS [EditDate]
+    FROM [dbo].[PolicyTransaction] AS [PolicyTransaction]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="VW_Test" EntityType="Self.VW_Test" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [VW_Test].[UniqID] AS [UniqID], 
@@ -192,9 +236,12 @@ warning 6002: The table/view 'SunnyDB.dbo.VW_Test' does not have a primary key d
             <End Role="tbl_OrderList" EntitySet="tbl_OrderList" />
             <End Role="tbl_OrderDetails" EntitySet="tbl_OrderDetails" />
           </AssociationSet>
+          <AssociationSet Name="FK_PolicyTransaction_PolicyData" Association="Self.FK_PolicyTransaction_PolicyData">
+            <End Role="PolicyData" EntitySet="PolicyData" />
+            <End Role="PolicyTransaction" EntitySet="PolicyTransaction" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="SunnyDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -254,6 +301,7 @@ warning 6002: The table/view 'SunnyDB.dbo.VW_Test' does not have a primary key d
           <Property Name="ContractStatusCode" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="PolicyStatus" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="ETLDate" Type="DateTime" Nullable="false" Precision="7" />
+          <NavigationProperty Name="PolicyTransactions" Relationship="SunnyDBModel.FK_PolicyTransaction_PolicyData" FromRole="PolicyData" ToRole="PolicyTransaction" />
         </EntityType>
         <EntityType Name="tbl_Category">
           <Key>
@@ -368,14 +416,24 @@ warning 6002: The table/view 'SunnyDB.dbo.VW_Test' does not have a primary key d
             <End Role="tbl_OrderDetails" EntitySet="tbl_OrderDetails" />
           </AssociationSet>
           <FunctionImport Name="FN_TEST" IsComposable="true" ReturnType="Collection(SunnyDBModel.FN_TEST_Result)">
-            <Parameter Name="paramId" Mode="In" Type="Int32" />
+          <Parameter Name="paramId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_ORDER_DETAILS" ReturnType="Collection(SunnyDBModel.SP_GET_ORDER_DETAILS_Result)">
-            <Parameter Name="OrderNo" Mode="InOut" Type="Int32" />
+          <Parameter Name="OrderNo" Mode="InOut" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GetPolicyDetails" ReturnType="Collection(SunnyDBModel.SP_GetPolicyDetails_Result)">
-            <Parameter Name="CustoemerCode" Mode="In" Type="String" />
+          <Parameter Name="CustoemerCode" Mode="In" Type="String" />
           </FunctionImport>
+          <EntitySet Name="PolicyTransactions" EntityType="SunnyDBModel.PolicyTransaction" />
+          <FunctionImport Name="SP_GetPolicyTransaction" ReturnType="Collection(SunnyDBModel.SP_GetPolicyTransaction_Result)">
+            <Parameter Name="PolicyNo" Mode="In" Type="Int32" />
+            <Parameter Name="StartDate" Mode="In" Type="DateTime" />
+            <Parameter Name="EndDate" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <AssociationSet Name="FK_PolicyTransaction_PolicyData" Association="SunnyDBModel.FK_PolicyTransaction_PolicyData">
+            <End Role="PolicyData" EntitySet="PolicyDatas" />
+            <End Role="PolicyTransaction" EntitySet="PolicyTransactions" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="SP_GET_ORDER_DETAILS_Result">
           <Property Type="Int32" Name="OrderNo" Nullable="false" />
@@ -405,6 +463,55 @@ warning 6002: The table/view 'SunnyDB.dbo.VW_Test' does not have a primary key d
           <Property Type="String" Name="PolicyStatus" Nullable="false" />
           <Property Type="DateTime" Name="ETLDate" Nullable="false" />
         </ComplexType>
+        <EntityType Name="PolicyTransaction">
+          <Key>
+            <PropertyRef Name="PolicyNo" />
+            <PropertyRef Name="CustomerId" />
+            <PropertyRef Name="PremiumDate" />
+          </Key>
+          <Property Name="PolicyNo" Type="Int32" Nullable="false" />
+          <Property Name="CustomerId" Type="Int32" Nullable="false" />
+          <Property Name="PremiumAmount" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="PremiumDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PolicyStatus" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="EditDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="PolicyData" Relationship="SunnyDBModel.FK_PolicyTransaction_PolicyData" FromRole="PolicyTransaction" ToRole="PolicyData" />
+        </EntityType>
+        <ComplexType Name="SP_GetPolicyTransaction_Result">
+          <Property Type="Int32" Name="PolicyNo" Nullable="false" />
+          <Property Type="Int32" Name="CustomerId" Nullable="false" />
+          <Property Type="Decimal" Name="PremiumAmount" Nullable="true" Precision="10" Scale="2" />
+          <Property Type="DateTime" Name="PremiumDate" Nullable="false" Precision="23" />
+          <Property Type="String" Name="PolicyStatus" Nullable="true" MaxLength="10" />
+          <Property Type="DateTime" Name="CreatedDate" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="EditDate" Nullable="true" Precision="23" />
+          <Property Type="Int32" Name="PolicyKey" Nullable="false" />
+          <Property Type="Int32" Name="ContractNumber" Nullable="false" />
+          <Property Type="String" Name="CustomerCode" Nullable="false" />
+          <Property Type="DateTime" Name="RiskCommencementDate" Nullable="false" />
+          <Property Type="String" Name="ProductName" Nullable="false" />
+          <Property Type="DateTime" Name="MaturityDate" Nullable="false" />
+          <Property Type="DateTime" Name="NextRenewalDue" Nullable="false" />
+          <Property Type="Decimal" Name="SumAssuredAmount" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="PDAmt" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="ContractStatusCode" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="String" Name="PD_Status" Nullable="false" />
+          <Property Type="DateTime" Name="ETLDate" Nullable="false" />
+          <Property Type="Int64" Name="dataByC_ID" Nullable="true" />
+        </ComplexType>
+        <Association Name="FK_PolicyTransaction_PolicyData">
+          <End Type="SunnyDBModel.PolicyData" Role="PolicyData" Multiplicity="1" />
+          <End Type="SunnyDBModel.PolicyTransaction" Role="PolicyTransaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PolicyData">
+              <PropertyRef Name="PolicyKey" />
+            </Principal>
+            <Dependent Role="PolicyTransaction">
+              <PropertyRef Name="PolicyNo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -580,6 +687,45 @@ warning 6002: The table/view 'SunnyDB.dbo.VW_Test' does not have a primary key d
                 <ScalarProperty Name="ContractStatusCode" ColumnName="ContractStatusCode" />
                 <ScalarProperty Name="PolicyStatus" ColumnName="PolicyStatus" />
                 <ScalarProperty Name="ETLDate" ColumnName="ETLDate" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="PolicyTransactions">
+            <EntityTypeMapping TypeName="SunnyDBModel.PolicyTransaction">
+              <MappingFragment StoreEntitySet="PolicyTransaction">
+                <ScalarProperty Name="EditDate" ColumnName="EditDate" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="PolicyStatus" ColumnName="PolicyStatus" />
+                <ScalarProperty Name="PremiumDate" ColumnName="PremiumDate" />
+                <ScalarProperty Name="PremiumAmount" ColumnName="PremiumAmount" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="PolicyNo" ColumnName="PolicyNo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SP_GetPolicyTransaction" FunctionName="SunnyDBModel.Store.SP_GetPolicyTransaction">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SunnyDBModel.SP_GetPolicyTransaction_Result">
+                <ScalarProperty Name="PolicyNo" ColumnName="PolicyNo" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="PremiumAmount" ColumnName="PremiumAmount" />
+                <ScalarProperty Name="PremiumDate" ColumnName="PremiumDate" />
+                <ScalarProperty Name="PolicyStatus" ColumnName="PolicyStatus" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="EditDate" ColumnName="EditDate" />
+                <ScalarProperty Name="PolicyKey" ColumnName="PolicyKey" />
+                <ScalarProperty Name="ContractNumber" ColumnName="ContractNumber" />
+                <ScalarProperty Name="CustomerCode" ColumnName="CustomerCode" />
+                <ScalarProperty Name="RiskCommencementDate" ColumnName="RiskCommencementDate" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="MaturityDate" ColumnName="MaturityDate" />
+                <ScalarProperty Name="NextRenewalDue" ColumnName="NextRenewalDue" />
+                <ScalarProperty Name="SumAssuredAmount" ColumnName="SumAssuredAmount" />
+                <ScalarProperty Name="PDAmt" ColumnName="PDAmt" />
+                <ScalarProperty Name="ContractStatusCode" ColumnName="ContractStatusCode" />
+                <ScalarProperty Name="PD_Status" ColumnName="PD_Status" />
+                <ScalarProperty Name="ETLDate" ColumnName="ETLDate" />
+                <ScalarProperty Name="dataByC_ID" ColumnName="dataByC_ID" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

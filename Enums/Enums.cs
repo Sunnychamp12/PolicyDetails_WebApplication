@@ -7,7 +7,6 @@ namespace PolicyDetails_WebApplication.Enums
 {
     public class Enums
     {
-        [Flags]
         public enum statusCode
         {
             Success = 1,

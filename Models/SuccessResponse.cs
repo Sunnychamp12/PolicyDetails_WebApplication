@@ -15,4 +15,9 @@ namespace PolicyDetails_WebApplication.Models
         public int Status { get; set; }
         public string Message { get; set; }
     }
+    public class GetPolicyTransactionResponse
+    {
+        public int Status { get; set; }
+        public List<CustomerDetails> customerDetails { get; set; }
+    }
 }

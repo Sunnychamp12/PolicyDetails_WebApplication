@@ -37,6 +37,7 @@ namespace PolicyDetails_WebApplication
         public virtual DbSet<tbl_OrderDetails> tbl_OrderDetails { get; set; }
         public virtual DbSet<tbl_OrderList> tbl_OrderList { get; set; }
         public virtual DbSet<VW_Test> VW_Test { get; set; }
+        public virtual DbSet<PolicyTransaction> PolicyTransactions { get; set; }
     
         [DbFunction("SunnyDBEntities", "FN_TEST")]
         public virtual IQueryable<FN_TEST_Result> FN_TEST(Nullable<int> paramId)
@@ -60,6 +61,23 @@ namespace PolicyDetails_WebApplication
                 new ObjectParameter("CustoemerCode", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GetPolicyDetails_Result>("SP_GetPolicyDetails", custoemerCodeParameter);
+        }
+    
+        public virtual ObjectResult<SP_GetPolicyTransaction_Result> SP_GetPolicyTransaction(Nullable<int> policyNo, Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate)
+        {
+            var policyNoParameter = policyNo.HasValue ?
+                new ObjectParameter("PolicyNo", policyNo) :
+                new ObjectParameter("PolicyNo", typeof(int));
+    
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GetPolicyTransaction_Result>("SP_GetPolicyTransaction", policyNoParameter, startDateParameter, endDateParameter);
         }
     }
 }

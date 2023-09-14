@@ -17,6 +17,8 @@
         <EntityTypeShape EntityType="SunnyDBModel.VW_Test" Width="1.5" PointX="7.75" PointY="4.75" IsExpanded="true" />
         <AssociationConnector Association="SunnyDBModel.FK__tbl_Items__Categ__17F790F9" ManuallyRouted="false" />
         <AssociationConnector Association="SunnyDBModel.FK__tbl_Order__Categ__1F98B2C1" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="SunnyDBModel.PolicyTransaction" Width="1.5" PointX="5.375" PointY="7.75" />
+        <AssociationConnector Association="SunnyDBModel.FK_PolicyTransaction_PolicyData" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

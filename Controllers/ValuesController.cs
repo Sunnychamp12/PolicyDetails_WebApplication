@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Data.Entity.Core.Objects;
 
 namespace PolicyDetails_WebApplication.Controllers
 {
@@ -29,36 +30,6 @@ namespace PolicyDetails_WebApplication.Controllers
             {
                 _dbContext = new SunnyDBEntities();
             }
-        }
-        #endregion
-
-        #region "Default methods"
-        // GET api/values
-        [System.Web.Http.Route("api/values/getValues")]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET api/values/5
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/values
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/values/5
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/values/5
-        public void Delete(int id)
-        {
         }
         #endregion
 
@@ -233,7 +204,91 @@ namespace PolicyDetails_WebApplication.Controllers
             }
             catch (Exception ex)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.NoContent, ex); ;
+                return Request.CreateErrorResponse(HttpStatusCode.NoContent, ex);
+            }
+        }
+        #endregion
+
+        #region "Get Policy Transaction"
+        [HttpPost]
+        [Route("GetPolicyTransaction")]
+        public HttpResponseMessage GetPolicyTransaction([FromBody] PolicyTransactionRequest paramPolicyData)
+        {
+            GetPolicyTransactionResponse successResponse = new GetPolicyTransactionResponse();
+            ErrorResponse errorResponse = new ErrorResponse();
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    headerToken = Request.Headers.GetValues(Enums.Enums.headerParams.headerToken.ToString()).First();
+                    string APPName = Request.Headers.GetValues(Enums.Enums.headerParams.APPName.ToString()).First();
+                    isValid = (headerToken == _strToken);
+                    if (isValid && APPName == _strAppName)
+                    {
+                        List<SP_GetPolicyTransaction_Result> _objPolicyTransation = _dbContext.SP_GetPolicyTransaction(paramPolicyData.PolicyNo, paramPolicyData.StartDate, paramPolicyData.EndDate).ToList<SP_GetPolicyTransaction_Result>();
+                        if (_objPolicyTransation != null)
+                        {
+                            successResponse.customerDetails = new List<CustomerDetails>();
+                            foreach (var getCustomerDetails in _objPolicyTransation.Distinct())
+                            {
+                                if (successResponse.customerDetails != null && !successResponse.customerDetails.Any(C => C.CustomerId == getCustomerDetails.CustomerId))
+                                {
+                                    CustomerDetails customerDetails = new CustomerDetails();
+                                    customerDetails.CustomerId = getCustomerDetails.CustomerId;
+                                    customerDetails.PremiumDate = getCustomerDetails.PremiumDate;
+                                    customerDetails.PolicyNo = getCustomerDetails.PolicyNo;
+                                    customerDetails.PremiumAmount = getCustomerDetails.PremiumAmount;
+                                    customerDetails.PolicyStatus = getCustomerDetails.PolicyStatus;
+                                    customerDetails.policyDetails = new List<PolicyData>();
+                                    successResponse.customerDetails.Add(customerDetails);
+                                }
+                            }
+                            foreach (var item in successResponse.customerDetails)
+                            {
+                                foreach (var getPolicyDetails in _objPolicyTransation.Where(C => C.CustomerId == item.CustomerId).ToList())
+                                {
+                                    PolicyData policyDetails = new PolicyData();
+                                    policyDetails.ContractNumber = getPolicyDetails.ContractNumber;
+                                    policyDetails.CustomerCode = getPolicyDetails.CustomerCode;
+                                    policyDetails.RiskCommencementDate = getPolicyDetails.RiskCommencementDate;
+                                    policyDetails.ProductName = getPolicyDetails.ProductName;
+                                    policyDetails.MaturityDate = getPolicyDetails.MaturityDate;
+                                    policyDetails.NextRenewalDue = getPolicyDetails.NextRenewalDue;
+                                    policyDetails.SumAssuredAmount = getPolicyDetails.SumAssuredAmount;
+                                    policyDetails.PremiumAmount = getPolicyDetails.PremiumAmount;
+                                    policyDetails.ContractStatusCode = getPolicyDetails.ContractStatusCode;
+                                    policyDetails.PolicyStatus = getPolicyDetails.PolicyStatus;
+                                    policyDetails.ETLDate = getPolicyDetails.ETLDate;
+                                    item.policyDetails.Add(policyDetails);
+                                }
+                            }
+                            successResponse.Status = (int)Enums.Enums.statusCode.Success;
+                            return Request.CreateResponse(HttpStatusCode.OK, successResponse);
+                        }
+                        else
+                        {
+                            errorResponse.Status = (int)Enums.Enums.statusCode.Error;
+                            errorResponse.Message = "Customers policy transaction details not found";
+                            return Request.CreateResponse(HttpStatusCode.OK, errorResponse);
+                        }
+                    }
+                    else
+                    {
+                        errorResponse.Status = (int)Enums.Enums.statusCode.Error;
+                        errorResponse.Message = "This request has failed authentication";
+                        return Request.CreateResponse(HttpStatusCode.Unauthorized, errorResponse);
+                    }
+                }
+                else
+                {
+                    errorResponse.Status = (int)Enums.Enums.statusCode.Error;
+                    errorResponse.Message = "Please enter valid data";
+                    return Request.CreateResponse(HttpStatusCode.BadRequest, errorResponse);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.NoContent, ex);
             }
         }
         #endregion
