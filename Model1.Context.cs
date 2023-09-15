@@ -15,10 +15,10 @@ namespace PolicyDetails_WebApplication
     using System.Data.Entity.Core.Objects;
     using System.Linq;
     
-    public partial class SunnyDBEntities : DbContext
+    public partial class TransactionDBEntities : DbContext
     {
-        public SunnyDBEntities()
-            : base("name=SunnyDBEntities")
+        public TransactionDBEntities()
+            : base("name=TransactionDBEntities")
         {
         }
     
@@ -27,47 +27,16 @@ namespace PolicyDetails_WebApplication
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<C__EFMigrationsHistory> C__EFMigrationsHistory { get; set; }
-        public virtual DbSet<City_Mas> City_Mas { get; set; }
-        public virtual DbSet<LoginDetail> LoginDetails { get; set; }
+        public virtual DbSet<tbl_AccountDetails> tbl_AccountDetails { get; set; }
+        public virtual DbSet<tbl_Transaction> tbl_Transaction { get; set; }
         public virtual DbSet<PolicyData> PolicyDatas { get; set; }
-        public virtual DbSet<tbl_Category> tbl_Category { get; set; }
-        public virtual DbSet<tbl_Employee> tbl_Employee { get; set; }
-        public virtual DbSet<tbl_Items> tbl_Items { get; set; }
-        public virtual DbSet<tbl_OrderDetails> tbl_OrderDetails { get; set; }
-        public virtual DbSet<tbl_OrderList> tbl_OrderList { get; set; }
-        public virtual DbSet<VW_Test> VW_Test { get; set; }
         public virtual DbSet<PolicyTransaction> PolicyTransactions { get; set; }
     
-        [DbFunction("SunnyDBEntities", "FN_TEST")]
-        public virtual IQueryable<FN_TEST_Result> FN_TEST(Nullable<int> paramId)
+        public virtual ObjectResult<Proc_GetAccountTransactionDetails_Result> Proc_GetAccountTransactionDetails(Nullable<int> accountNo, Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate)
         {
-            var paramIdParameter = paramId.HasValue ?
-                new ObjectParameter("paramId", paramId) :
-                new ObjectParameter("paramId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<FN_TEST_Result>("[SunnyDBEntities].[FN_TEST](@paramId)", paramIdParameter);
-        }
-    
-        public virtual ObjectResult<SP_GET_ORDER_DETAILS_Result> SP_GET_ORDER_DETAILS(ObjectParameter orderNo)
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_ORDER_DETAILS_Result>("SP_GET_ORDER_DETAILS", orderNo);
-        }
-    
-        public virtual ObjectResult<SP_GetPolicyDetails_Result> SP_GetPolicyDetails(string custoemerCode)
-        {
-            var custoemerCodeParameter = custoemerCode != null ?
-                new ObjectParameter("CustoemerCode", custoemerCode) :
-                new ObjectParameter("CustoemerCode", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GetPolicyDetails_Result>("SP_GetPolicyDetails", custoemerCodeParameter);
-        }
-    
-        public virtual ObjectResult<SP_GetPolicyTransaction_Result> SP_GetPolicyTransaction(Nullable<int> policyNo, Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate)
-        {
-            var policyNoParameter = policyNo.HasValue ?
-                new ObjectParameter("PolicyNo", policyNo) :
-                new ObjectParameter("PolicyNo", typeof(int));
+            var accountNoParameter = accountNo.HasValue ?
+                new ObjectParameter("AccountNo", accountNo) :
+                new ObjectParameter("AccountNo", typeof(int));
     
             var startDateParameter = startDate.HasValue ?
                 new ObjectParameter("StartDate", startDate) :
@@ -77,7 +46,7 @@ namespace PolicyDetails_WebApplication
                 new ObjectParameter("EndDate", endDate) :
                 new ObjectParameter("EndDate", typeof(System.DateTime));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GetPolicyTransaction_Result>("SP_GetPolicyTransaction", policyNoParameter, startDateParameter, endDateParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Proc_GetAccountTransactionDetails_Result>("Proc_GetAccountTransactionDetails", accountNoParameter, startDateParameter, endDateParameter);
         }
     }
 }

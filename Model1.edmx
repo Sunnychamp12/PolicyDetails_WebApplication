@@ -4,44 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="SunnyDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="__EFMigrationsHistory">
-          <Key>
-            <PropertyRef Name="MigrationId" />
-          </Key>
-          <Property Name="MigrationId" Type="nvarchar" MaxLength="150" Nullable="false" />
-          <Property Name="ProductVersion" Type="nvarchar" MaxLength="32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="City_Mas">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="FIRST_NAME" Type="nvarchar" MaxLength="25" />
-          <Property Name="MIDDLE_NAME" Type="nvarchar" MaxLength="25" />
-          <Property Name="LAST_NAME" Type="nvarchar" MaxLength="25" />
-          <Property Name="FULL_NAME" Type="nvarchar" MaxLength="50" />
-          <Property Name="GENDER" Type="nvarchar" MaxLength="5" />
-          <Property Name="CITY" Type="nvarchar" MaxLength="25" />
-          <Property Name="MOBILE_NO" Type="nvarchar" MaxLength="10" />
-          <Property Name="EMAIL_ID" Type="nvarchar" MaxLength="50" />
-          <Property Name="PASSWORD" Type="nvarchar" MaxLength="50" />
-          <Property Name="MODE" Type="nvarchar" MaxLength="20" />
-        </EntityType>
-        <EntityType Name="LoginDetail">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Emp_Name" Type="nvarchar" MaxLength="100" />
-          <Property Name="User_Name" Type="nvarchar" MaxLength="20" />
-          <Property Name="Password" Type="nvarchar" MaxLength="20" />
-          <Property Name="Email_Id" Type="nvarchar" MaxLength="50" />
-          <Property Name="EditBy" Type="int" />
-          <Property Name="EditOn" Type="datetime" />
-          <Property Name="CreateBy" Type="int" />
-          <Property Name="CreateOn" Type="datetime" />
-        </EntityType>
+    <Schema Namespace="TransactionDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="PolicyData">
           <Key>
             <PropertyRef Name="PolicyKey" />
@@ -60,7 +23,7 @@
           <Property Name="ETLDate" Type="datetime2" Precision="7" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'SunnyDB.dbo.PolicyTransaction' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'TransactionDB.dbo.PolicyTransaction' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="PolicyTransaction">
           <Key>
             <PropertyRef Name="PolicyNo" />
@@ -75,140 +38,54 @@ warning 6002: The table/view 'SunnyDB.dbo.PolicyTransaction' does not have a pri
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="EditDate" Type="datetime" />
         </EntityType>
-        <EntityType Name="tbl_Category">
+        <EntityType Name="tbl_AccountDetails">
           <Key>
-            <PropertyRef Name="CategoryId" />
+            <PropertyRef Name="AccountNo" />
           </Key>
-          <Property Name="CategoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="CategoryName" Type="nvarchar" MaxLength="50" />
+          <Property Name="AccountNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AccountName" Type="nvarchar" MaxLength="100" />
+          <Property Name="Address" Type="nvarchar" MaxLength="500" />
+          <Property Name="AccountDescription" Type="nvarchar" MaxLength="10" />
+          <Property Name="Branch" Type="nvarchar" MaxLength="20" />
+          <Property Name="IFSCode" Type="nvarchar" MaxLength="20" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="EditDate" Type="datetime" />
         </EntityType>
-        <EntityType Name="tbl_Employee">
+        <EntityType Name="tbl_Transaction">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="TransactionId" />
           </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Emp_Name" Type="nvarchar" MaxLength="100" />
-          <Property Name="Emp_Department" Type="nvarchar" MaxLength="10" />
-          <Property Name="Emp_Salary" Type="int" />
-          <Property Name="Address" Type="nvarchar" MaxLength="50" />
-          <Property Name="Email" Type="nvarchar" MaxLength="50" />
-          <Property Name="CreateBy" Type="int" />
-          <Property Name="CreateOn" Type="datetime" />
-          <Property Name="EditBy" Type="int" />
-          <Property Name="EditOn" Type="datetime" />
+          <Property Name="TransactionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AccountNo" Type="int" />
+          <Property Name="TransDate" Type="datetime" />
+          <Property Name="Details" Type="nvarchar" MaxLength="100" />
+          <Property Name="Debit" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Credit" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Balance" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="EditDate" Type="datetime" />
         </EntityType>
-        <EntityType Name="tbl_Items">
-          <Key>
-            <PropertyRef Name="ItemId" />
-          </Key>
-          <Property Name="ItemId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="CategoryId" Type="int" />
-          <Property Name="ItemName" Type="nvarchar" MaxLength="50" />
-          <Property Name="Rate" Type="numeric" Precision="18" Scale="0" />
-        </EntityType>
-        <EntityType Name="tbl_OrderDetails">
-          <Key>
-            <PropertyRef Name="DetailId" />
-          </Key>
-          <Property Name="DetailId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="OrderNo" Type="int" />
-          <Property Name="CategoryId" Type="int" />
-          <Property Name="ItemId" Type="int" />
-          <Property Name="Qty" Type="int" />
-          <Property Name="Rate" Type="decimal" Precision="18" Scale="0" />
-          <Property Name="ItemTotal" Type="decimal" Precision="18" Scale="0" />
-          <Property Name="CreateOn" Type="datetime" />
-          <Property Name="EditOn" Type="datetime" />
-        </EntityType>
-        <EntityType Name="tbl_OrderList">
-          <Key>
-            <PropertyRef Name="OrderNo" />
-          </Key>
-          <Property Name="OrderNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="OrderDate" Type="datetime" />
-          <Property Name="OrderTotal" Type="decimal" Precision="18" Scale="0" />
-          <Property Name="CustomerName" Type="nvarchar" MaxLength="20" />
-          <Property Name="CreateOn" Type="datetime" />
-          <Property Name="EditOn" Type="datetime" />
-        </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'SunnyDB.dbo.VW_Test' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="VW_Test">
-          <Key>
-            <PropertyRef Name="UniqID" />
-          </Key>
-          <Property Name="UniqID" Type="int" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="100" />
-          <Property Name="Email" Type="nvarchar" MaxLength="50" />
-          <Property Name="LoginId" Type="nvarchar" MaxLength="20" />
-        </EntityType>
-        <Association Name="FK__tbl_Items__Categ__17F790F9">
-          <End Role="tbl_Category" Type="Self.tbl_Category" Multiplicity="0..1" />
-          <End Role="tbl_Items" Type="Self.tbl_Items" Multiplicity="*" />
+        <Association Name="FK__tbl_Trans__Accou__267ABA7A">
+          <End Role="tbl_AccountDetails" Type="Self.tbl_AccountDetails" Multiplicity="0..1" />
+          <End Role="tbl_Transaction" Type="Self.tbl_Transaction" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="tbl_Category">
-              <PropertyRef Name="CategoryId" />
+            <Principal Role="tbl_AccountDetails">
+              <PropertyRef Name="AccountNo" />
             </Principal>
-            <Dependent Role="tbl_Items">
-              <PropertyRef Name="CategoryId" />
+            <Dependent Role="tbl_Transaction">
+              <PropertyRef Name="AccountNo" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tbl_Order__Categ__1F98B2C1">
-          <End Role="tbl_OrderList" Type="Self.tbl_OrderList" Multiplicity="0..1" />
-          <End Role="tbl_OrderDetails" Type="Self.tbl_OrderDetails" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tbl_OrderList">
-              <PropertyRef Name="OrderNo" />
-            </Principal>
-            <Dependent Role="tbl_OrderDetails">
-              <PropertyRef Name="OrderNo" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_PolicyTransaction_PolicyData">
-          <End Role="PolicyData" Type="Self.PolicyData" Multiplicity="1" />
-          <End Role="PolicyTransaction" Type="Self.PolicyTransaction" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="PolicyData">
-              <PropertyRef Name="PolicyKey" />
-            </Principal>
-            <Dependent Role="PolicyTransaction">
-              <PropertyRef Name="PolicyNo" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Function Name="FN_TEST" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="paramId" Type="int" Mode="In" />
-          <ReturnType>
-            <CollectionType>
-              <RowType>
-                <Property Name="ColumnName" Type="int" Nullable="false" />
-              </RowType>
-            </CollectionType>
-          </ReturnType>
+        <Function Name="Proc_GetAccountTransactionDetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="AccountNo" Type="int" Mode="In" />
+          <Parameter Name="StartDate" Type="datetime" Mode="In" />
+          <Parameter Name="EndDate" Type="datetime" Mode="In" />
         </Function>
-        <Function Name="SP_GET_ORDER_DETAILS" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="OrderNo" Type="int" Mode="InOut" />
-        </Function>
-        <Function Name="SP_GetPolicyDetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="CustoemerCode" Type="nvarchar" Mode="In" />
-        </Function>
-        <Function Name="SP_GetPolicyTransaction" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="PolicyNo" Type="int" Mode="In" />
-          <Parameter Name="StartDate" Type="date" Mode="In" />
-          <Parameter Name="EndDate" Type="date" Mode="In" />
-        </Function>
-        <EntityContainer Name="SunnyDBModelStoreContainer">
-          <EntitySet Name="__EFMigrationsHistory" EntityType="Self.__EFMigrationsHistory" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="City_Mas" EntityType="Self.City_Mas" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="LoginDetail" EntityType="Self.LoginDetail" Schema="dbo" store:Type="Tables" />
+        <EntityContainer Name="TransactionDBModelStoreContainer">
           <EntitySet Name="PolicyData" EntityType="Self.PolicyData" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="tbl_Category" EntityType="Self.tbl_Category" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="tbl_Employee" EntityType="Self.tbl_Employee" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="tbl_Items" EntityType="Self.tbl_Items" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="tbl_OrderDetails" EntityType="Self.tbl_OrderDetails" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="tbl_OrderList" EntityType="Self.tbl_OrderList" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_AccountDetails" EntityType="Self.tbl_AccountDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_Transaction" EntityType="Self.tbl_Transaction" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PolicyTransaction" EntityType="Self.PolicyTransaction" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [PolicyTransaction].[PolicyNo] AS [PolicyNo], 
@@ -220,249 +97,88 @@ warning 6002: The table/view 'SunnyDB.dbo.VW_Test' does not have a primary key d
     [PolicyTransaction].[EditDate] AS [EditDate]
     FROM [dbo].[PolicyTransaction] AS [PolicyTransaction]</DefiningQuery>
           </EntitySet>
-          <EntitySet Name="VW_Test" EntityType="Self.VW_Test" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [VW_Test].[UniqID] AS [UniqID], 
-    [VW_Test].[Name] AS [Name], 
-    [VW_Test].[Email] AS [Email], 
-    [VW_Test].[LoginId] AS [LoginId]
-    FROM [dbo].[VW_Test] AS [VW_Test]</DefiningQuery>
-          </EntitySet>
-          <AssociationSet Name="FK__tbl_Items__Categ__17F790F9" Association="Self.FK__tbl_Items__Categ__17F790F9">
-            <End Role="tbl_Category" EntitySet="tbl_Category" />
-            <End Role="tbl_Items" EntitySet="tbl_Items" />
-          </AssociationSet>
-          <AssociationSet Name="FK__tbl_Order__Categ__1F98B2C1" Association="Self.FK__tbl_Order__Categ__1F98B2C1">
-            <End Role="tbl_OrderList" EntitySet="tbl_OrderList" />
-            <End Role="tbl_OrderDetails" EntitySet="tbl_OrderDetails" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PolicyTransaction_PolicyData" Association="Self.FK_PolicyTransaction_PolicyData">
-            <End Role="PolicyData" EntitySet="PolicyData" />
-            <End Role="PolicyTransaction" EntitySet="PolicyTransaction" />
+          <AssociationSet Name="FK__tbl_Trans__Accou__267ABA7A" Association="Self.FK__tbl_Trans__Accou__267ABA7A">
+            <End Role="tbl_AccountDetails" EntitySet="tbl_AccountDetails" />
+            <End Role="tbl_Transaction" EntitySet="tbl_Transaction" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="SunnyDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <ComplexType Name="FN_TEST_Result">
-          <Property Name="ColumnName" Type="Int32" Nullable="false" />
-        </ComplexType>
-        <EntityType Name="C__EFMigrationsHistory">
+      <Schema Namespace="TransactionDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tbl_AccountDetails">
           <Key>
-            <PropertyRef Name="MigrationId" />
+            <PropertyRef Name="AccountNo" />
           </Key>
-          <Property Name="MigrationId" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ProductVersion" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="AccountNo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AccountName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="AccountDescription" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Branch" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="IFSCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="EditDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="tbl_Transaction" Relationship="Self.FK__tbl_Trans__Accou__267ABA7A" FromRole="tbl_AccountDetails" ToRole="tbl_Transaction" />
         </EntityType>
-        <EntityType Name="City_Mas">
+        <EntityType Name="tbl_Transaction">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="TransactionId" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FIRST_NAME" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
-          <Property Name="MIDDLE_NAME" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
-          <Property Name="LAST_NAME" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
-          <Property Name="FULL_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="GENDER" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
-          <Property Name="CITY" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
-          <Property Name="MOBILE_NO" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="EMAIL_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="PASSWORD" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="MODE" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="TransactionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AccountNo" Type="Int32" />
+          <Property Name="TransDate" Type="DateTime" Precision="3" />
+          <Property Name="Details" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Debit" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Credit" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Balance" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="EditDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="tbl_AccountDetails" Relationship="Self.FK__tbl_Trans__Accou__267ABA7A" FromRole="tbl_Transaction" ToRole="tbl_AccountDetails" />
         </EntityType>
-        <EntityType Name="LoginDetail">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Emp_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="User_Name" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="Password" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="Email_Id" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="EditBy" Type="Int32" />
-          <Property Name="EditOn" Type="DateTime" Precision="3" />
-          <Property Name="CreateBy" Type="Int32" />
-          <Property Name="CreateOn" Type="DateTime" Precision="3" />
-        </EntityType>
+        <Association Name="FK__tbl_Trans__Accou__267ABA7A">
+          <End Role="tbl_AccountDetails" Type="Self.tbl_AccountDetails" Multiplicity="0..1" />
+          <End Role="tbl_Transaction" Type="Self.tbl_Transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_AccountDetails">
+              <PropertyRef Name="AccountNo" />
+            </Principal>
+            <Dependent Role="tbl_Transaction">
+              <PropertyRef Name="AccountNo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TransactionDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tbl_AccountDetails" EntityType="Self.tbl_AccountDetails" />
+          <EntitySet Name="tbl_Transaction" EntityType="Self.tbl_Transaction" />
+          <AssociationSet Name="FK__tbl_Trans__Accou__267ABA7A" Association="Self.FK__tbl_Trans__Accou__267ABA7A">
+            <End Role="tbl_AccountDetails" EntitySet="tbl_AccountDetails" />
+            <End Role="tbl_Transaction" EntitySet="tbl_Transaction" />
+          </AssociationSet>
+          <EntitySet Name="PolicyDatas" EntityType="TransactionDBModel.PolicyData" />
+          <EntitySet Name="PolicyTransactions" EntityType="TransactionDBModel.PolicyTransaction" />
+          <FunctionImport Name="Proc_GetAccountTransactionDetails" ReturnType="Collection(TransactionDBModel.Proc_GetAccountTransactionDetails_Result)">
+            <Parameter Name="AccountNo" Mode="In" Type="Int32" />
+            <Parameter Name="StartDate" Mode="In" Type="DateTime" />
+            <Parameter Name="EndDate" Mode="In" Type="DateTime" />
+          </FunctionImport>
+        </EntityContainer>
         <EntityType Name="PolicyData">
           <Key>
             <PropertyRef Name="PolicyKey" />
           </Key>
           <Property Name="PolicyKey" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ContractNumber" Type="Int32" Nullable="false" />
-          <Property Name="CustomerCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CustomerCode" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="RiskCommencementDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="ProductName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ProductName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="MaturityDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="NextRenewalDue" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="SumAssuredAmount" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="PremiumAmount" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="ContractStatusCode" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="PolicyStatus" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SumAssuredAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="PremiumAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="ContractStatusCode" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="PolicyStatus" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="ETLDate" Type="DateTime" Nullable="false" Precision="7" />
-          <NavigationProperty Name="PolicyTransactions" Relationship="SunnyDBModel.FK_PolicyTransaction_PolicyData" FromRole="PolicyData" ToRole="PolicyTransaction" />
         </EntityType>
-        <EntityType Name="tbl_Category">
-          <Key>
-            <PropertyRef Name="CategoryId" />
-          </Key>
-          <Property Name="CategoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CategoryName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="tbl_Items" Relationship="Self.FK__tbl_Items__Categ__17F790F9" FromRole="tbl_Category" ToRole="tbl_Items" />
-        </EntityType>
-        <EntityType Name="tbl_Employee">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Emp_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Emp_Department" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="Emp_Salary" Type="Int32" />
-          <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CreateBy" Type="Int32" />
-          <Property Name="CreateOn" Type="DateTime" Precision="3" />
-          <Property Name="EditBy" Type="Int32" />
-          <Property Name="EditOn" Type="DateTime" Precision="3" />
-        </EntityType>
-        <EntityType Name="tbl_Items">
-          <Key>
-            <PropertyRef Name="ItemId" />
-          </Key>
-          <Property Name="ItemId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CategoryId" Type="Int32" />
-          <Property Name="ItemName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Rate" Type="Decimal" Precision="18" Scale="0" />
-          <NavigationProperty Name="tbl_Category" Relationship="Self.FK__tbl_Items__Categ__17F790F9" FromRole="tbl_Items" ToRole="tbl_Category" />
-        </EntityType>
-        <EntityType Name="tbl_OrderDetails">
-          <Key>
-            <PropertyRef Name="DetailId" />
-          </Key>
-          <Property Name="DetailId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="OrderNo" Type="Int32" />
-          <Property Name="CategoryId" Type="Int32" />
-          <Property Name="ItemId" Type="Int32" />
-          <Property Name="Qty" Type="Int32" />
-          <Property Name="Rate" Type="Decimal" Precision="18" Scale="0" />
-          <Property Name="ItemTotal" Type="Decimal" Precision="18" Scale="0" />
-          <Property Name="CreateOn" Type="DateTime" Precision="3" />
-          <Property Name="EditOn" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="tbl_OrderList" Relationship="Self.FK__tbl_Order__Categ__1F98B2C1" FromRole="tbl_OrderDetails" ToRole="tbl_OrderList" />
-        </EntityType>
-        <EntityType Name="tbl_OrderList">
-          <Key>
-            <PropertyRef Name="OrderNo" />
-          </Key>
-          <Property Name="OrderNo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="OrderDate" Type="DateTime" Precision="3" />
-          <Property Name="OrderTotal" Type="Decimal" Precision="18" Scale="0" />
-          <Property Name="CustomerName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="CreateOn" Type="DateTime" Precision="3" />
-          <Property Name="EditOn" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="tbl_OrderDetails" Relationship="Self.FK__tbl_Order__Categ__1F98B2C1" FromRole="tbl_OrderList" ToRole="tbl_OrderDetails" />
-        </EntityType>
-        <EntityType Name="VW_Test">
-          <Key>
-            <PropertyRef Name="UniqID" />
-          </Key>
-          <Property Name="UniqID" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="LoginId" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <Association Name="FK__tbl_Items__Categ__17F790F9">
-          <End Role="tbl_Category" Type="Self.tbl_Category" Multiplicity="0..1" />
-          <End Role="tbl_Items" Type="Self.tbl_Items" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tbl_Category">
-              <PropertyRef Name="CategoryId" />
-            </Principal>
-            <Dependent Role="tbl_Items">
-              <PropertyRef Name="CategoryId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__tbl_Order__Categ__1F98B2C1">
-          <End Role="tbl_OrderList" Type="Self.tbl_OrderList" Multiplicity="0..1" />
-          <End Role="tbl_OrderDetails" Type="Self.tbl_OrderDetails" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tbl_OrderList">
-              <PropertyRef Name="OrderNo" />
-            </Principal>
-            <Dependent Role="tbl_OrderDetails">
-              <PropertyRef Name="OrderNo" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityContainer Name="SunnyDBEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="C__EFMigrationsHistory" EntityType="Self.C__EFMigrationsHistory" />
-          <EntitySet Name="City_Mas" EntityType="Self.City_Mas" />
-          <EntitySet Name="LoginDetails" EntityType="Self.LoginDetail" />
-          <EntitySet Name="PolicyDatas" EntityType="Self.PolicyData" />
-          <EntitySet Name="tbl_Category" EntityType="Self.tbl_Category" />
-          <EntitySet Name="tbl_Employee" EntityType="Self.tbl_Employee" />
-          <EntitySet Name="tbl_Items" EntityType="Self.tbl_Items" />
-          <EntitySet Name="tbl_OrderDetails" EntityType="Self.tbl_OrderDetails" />
-          <EntitySet Name="tbl_OrderList" EntityType="Self.tbl_OrderList" />
-          <EntitySet Name="VW_Test" EntityType="Self.VW_Test" />
-          <AssociationSet Name="FK__tbl_Items__Categ__17F790F9" Association="Self.FK__tbl_Items__Categ__17F790F9">
-            <End Role="tbl_Category" EntitySet="tbl_Category" />
-            <End Role="tbl_Items" EntitySet="tbl_Items" />
-          </AssociationSet>
-          <AssociationSet Name="FK__tbl_Order__Categ__1F98B2C1" Association="Self.FK__tbl_Order__Categ__1F98B2C1">
-            <End Role="tbl_OrderList" EntitySet="tbl_OrderList" />
-            <End Role="tbl_OrderDetails" EntitySet="tbl_OrderDetails" />
-          </AssociationSet>
-          <FunctionImport Name="FN_TEST" IsComposable="true" ReturnType="Collection(SunnyDBModel.FN_TEST_Result)">
-          <Parameter Name="paramId" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="SP_GET_ORDER_DETAILS" ReturnType="Collection(SunnyDBModel.SP_GET_ORDER_DETAILS_Result)">
-          <Parameter Name="OrderNo" Mode="InOut" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="SP_GetPolicyDetails" ReturnType="Collection(SunnyDBModel.SP_GetPolicyDetails_Result)">
-          <Parameter Name="CustoemerCode" Mode="In" Type="String" />
-          </FunctionImport>
-          <EntitySet Name="PolicyTransactions" EntityType="SunnyDBModel.PolicyTransaction" />
-          <FunctionImport Name="SP_GetPolicyTransaction" ReturnType="Collection(SunnyDBModel.SP_GetPolicyTransaction_Result)">
-            <Parameter Name="PolicyNo" Mode="In" Type="Int32" />
-            <Parameter Name="StartDate" Mode="In" Type="DateTime" />
-            <Parameter Name="EndDate" Mode="In" Type="DateTime" />
-          </FunctionImport>
-          <AssociationSet Name="FK_PolicyTransaction_PolicyData" Association="SunnyDBModel.FK_PolicyTransaction_PolicyData">
-            <End Role="PolicyData" EntitySet="PolicyDatas" />
-            <End Role="PolicyTransaction" EntitySet="PolicyTransactions" />
-          </AssociationSet>
-        </EntityContainer>
-        <ComplexType Name="SP_GET_ORDER_DETAILS_Result">
-          <Property Type="Int32" Name="OrderNo" Nullable="false" />
-          <Property Type="DateTime" Name="OrderDate" Nullable="true" Precision="23" />
-          <Property Type="Decimal" Name="OrderTotal" Nullable="true" Precision="18" Scale="0" />
-          <Property Type="String" Name="CustomerName" Nullable="true" MaxLength="20" />
-          <Property Type="Int32" Name="DetailId" Nullable="true" />
-          <Property Type="Int32" Name="CategoryId" Nullable="false" />
-          <Property Type="String" Name="CategoryName" Nullable="true" MaxLength="50" />
-          <Property Type="Int32" Name="ItemId" Nullable="false" />
-          <Property Type="String" Name="ItemName" Nullable="true" MaxLength="50" />
-          <Property Type="Int32" Name="Qty" Nullable="true" />
-          <Property Type="Decimal" Name="Rate" Nullable="true" Precision="18" Scale="0" />
-          <Property Type="Decimal" Name="ItemTotal" Nullable="true" Precision="18" Scale="0" />
-        </ComplexType>
-        <ComplexType Name="SP_GetPolicyDetails_Result">
-          <Property Type="Int32" Name="PolicyKey" Nullable="false" />
-          <Property Type="Int32" Name="ContractNumber" Nullable="false" />
-          <Property Type="String" Name="CustomerCode" Nullable="false" />
-          <Property Type="DateTime" Name="RiskCommencementDate" Nullable="false" />
-          <Property Type="String" Name="ProductName" Nullable="false" />
-          <Property Type="DateTime" Name="MaturityDate" Nullable="false" />
-          <Property Type="DateTime" Name="NextRenewalDue" Nullable="false" />
-          <Property Type="Decimal" Name="SumAssuredAmount" Nullable="false" Precision="18" Scale="2" />
-          <Property Type="Decimal" Name="PremiumAmount" Nullable="false" Precision="18" Scale="2" />
-          <Property Type="Decimal" Name="ContractStatusCode" Nullable="false" Precision="18" Scale="2" />
-          <Property Type="String" Name="PolicyStatus" Nullable="false" />
-          <Property Type="DateTime" Name="ETLDate" Nullable="false" />
-        </ComplexType>
         <EntityType Name="PolicyTransaction">
           <Key>
             <PropertyRef Name="PolicyNo" />
@@ -476,222 +192,73 @@ warning 6002: The table/view 'SunnyDB.dbo.VW_Test' does not have a primary key d
           <Property Name="PolicyStatus" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="EditDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="PolicyData" Relationship="SunnyDBModel.FK_PolicyTransaction_PolicyData" FromRole="PolicyTransaction" ToRole="PolicyData" />
         </EntityType>
-        <ComplexType Name="SP_GetPolicyTransaction_Result">
-          <Property Type="Int32" Name="PolicyNo" Nullable="false" />
-          <Property Type="Int32" Name="CustomerId" Nullable="false" />
-          <Property Type="Decimal" Name="PremiumAmount" Nullable="true" Precision="10" Scale="2" />
-          <Property Type="DateTime" Name="PremiumDate" Nullable="false" Precision="23" />
-          <Property Type="String" Name="PolicyStatus" Nullable="true" MaxLength="10" />
-          <Property Type="DateTime" Name="CreatedDate" Nullable="true" Precision="23" />
+        <ComplexType Name="Proc_GetAccountTransactionDetails_Result">
+          <Property Type="Int32" Name="TransactionId" Nullable="false" />
+          <Property Type="Int32" Name="AccountNo" Nullable="true" />
+          <Property Type="DateTime" Name="TransDate" Nullable="true" Precision="23" />
+          <Property Type="String" Name="Details" Nullable="true" MaxLength="100" />
+          <Property Type="Decimal" Name="Debit" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="Credit" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="Balance" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="DateTime" Name="CreateDate" Nullable="true" Precision="23" />
           <Property Type="DateTime" Name="EditDate" Nullable="true" Precision="23" />
-          <Property Type="Int32" Name="PolicyKey" Nullable="false" />
-          <Property Type="Int32" Name="ContractNumber" Nullable="false" />
-          <Property Type="String" Name="CustomerCode" Nullable="false" />
-          <Property Type="DateTime" Name="RiskCommencementDate" Nullable="false" />
-          <Property Type="String" Name="ProductName" Nullable="false" />
-          <Property Type="DateTime" Name="MaturityDate" Nullable="false" />
-          <Property Type="DateTime" Name="NextRenewalDue" Nullable="false" />
-          <Property Type="Decimal" Name="SumAssuredAmount" Nullable="false" Precision="18" Scale="2" />
-          <Property Type="Decimal" Name="PDAmt" Nullable="false" Precision="18" Scale="2" />
-          <Property Type="Decimal" Name="ContractStatusCode" Nullable="false" Precision="18" Scale="2" />
-          <Property Type="String" Name="PD_Status" Nullable="false" />
-          <Property Type="DateTime" Name="ETLDate" Nullable="false" />
-          <Property Type="Int64" Name="dataByC_ID" Nullable="true" />
         </ComplexType>
-        <Association Name="FK_PolicyTransaction_PolicyData">
-          <End Type="SunnyDBModel.PolicyData" Role="PolicyData" Multiplicity="1" />
-          <End Type="SunnyDBModel.PolicyTransaction" Role="PolicyTransaction" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="PolicyData">
-              <PropertyRef Name="PolicyKey" />
-            </Principal>
-            <Dependent Role="PolicyTransaction">
-              <PropertyRef Name="PolicyNo" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="SunnyDBModelStoreContainer" CdmEntityContainer="SunnyDBEntities">
-          <EntitySetMapping Name="C__EFMigrationsHistory">
-            <EntityTypeMapping TypeName="SunnyDBModel.C__EFMigrationsHistory">
-              <MappingFragment StoreEntitySet="__EFMigrationsHistory">
-                <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
-                <ScalarProperty Name="ProductVersion" ColumnName="ProductVersion" />
+        <EntityContainerMapping StorageEntityContainer="TransactionDBModelStoreContainer" CdmEntityContainer="TransactionDBEntities">
+          <EntitySetMapping Name="tbl_AccountDetails">
+            <EntityTypeMapping TypeName="TransactionDBModel.tbl_AccountDetails">
+              <MappingFragment StoreEntitySet="tbl_AccountDetails">
+                <ScalarProperty Name="AccountNo" ColumnName="AccountNo" />
+                <ScalarProperty Name="AccountName" ColumnName="AccountName" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="AccountDescription" ColumnName="AccountDescription" />
+                <ScalarProperty Name="Branch" ColumnName="Branch" />
+                <ScalarProperty Name="IFSCode" ColumnName="IFSCode" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="EditDate" ColumnName="EditDate" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="City_Mas">
-            <EntityTypeMapping TypeName="SunnyDBModel.City_Mas">
-              <MappingFragment StoreEntitySet="City_Mas">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="FIRST_NAME" ColumnName="FIRST_NAME" />
-                <ScalarProperty Name="MIDDLE_NAME" ColumnName="MIDDLE_NAME" />
-                <ScalarProperty Name="LAST_NAME" ColumnName="LAST_NAME" />
-                <ScalarProperty Name="FULL_NAME" ColumnName="FULL_NAME" />
-                <ScalarProperty Name="GENDER" ColumnName="GENDER" />
-                <ScalarProperty Name="CITY" ColumnName="CITY" />
-                <ScalarProperty Name="MOBILE_NO" ColumnName="MOBILE_NO" />
-                <ScalarProperty Name="EMAIL_ID" ColumnName="EMAIL_ID" />
-                <ScalarProperty Name="PASSWORD" ColumnName="PASSWORD" />
-                <ScalarProperty Name="MODE" ColumnName="MODE" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="LoginDetails">
-            <EntityTypeMapping TypeName="SunnyDBModel.LoginDetail">
-              <MappingFragment StoreEntitySet="LoginDetail">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Emp_Name" ColumnName="Emp_Name" />
-                <ScalarProperty Name="User_Name" ColumnName="User_Name" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="Email_Id" ColumnName="Email_Id" />
-                <ScalarProperty Name="EditBy" ColumnName="EditBy" />
-                <ScalarProperty Name="EditOn" ColumnName="EditOn" />
-                <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
-                <ScalarProperty Name="CreateOn" ColumnName="CreateOn" />
+          <EntitySetMapping Name="tbl_Transaction">
+            <EntityTypeMapping TypeName="TransactionDBModel.tbl_Transaction">
+              <MappingFragment StoreEntitySet="tbl_Transaction">
+                <ScalarProperty Name="TransactionId" ColumnName="TransactionId" />
+                <ScalarProperty Name="AccountNo" ColumnName="AccountNo" />
+                <ScalarProperty Name="TransDate" ColumnName="TransDate" />
+                <ScalarProperty Name="Details" ColumnName="Details" />
+                <ScalarProperty Name="Debit" ColumnName="Debit" />
+                <ScalarProperty Name="Credit" ColumnName="Credit" />
+                <ScalarProperty Name="Balance" ColumnName="Balance" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="EditDate" ColumnName="EditDate" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PolicyDatas">
-            <EntityTypeMapping TypeName="SunnyDBModel.PolicyData">
+            <EntityTypeMapping TypeName="TransactionDBModel.PolicyData">
               <MappingFragment StoreEntitySet="PolicyData">
-                <ScalarProperty Name="PolicyKey" ColumnName="PolicyKey" />
-                <ScalarProperty Name="ContractNumber" ColumnName="ContractNumber" />
-                <ScalarProperty Name="CustomerCode" ColumnName="CustomerCode" />
-                <ScalarProperty Name="RiskCommencementDate" ColumnName="RiskCommencementDate" />
-                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
-                <ScalarProperty Name="MaturityDate" ColumnName="MaturityDate" />
-                <ScalarProperty Name="NextRenewalDue" ColumnName="NextRenewalDue" />
-                <ScalarProperty Name="SumAssuredAmount" ColumnName="SumAssuredAmount" />
-                <ScalarProperty Name="PremiumAmount" ColumnName="PremiumAmount" />
-                <ScalarProperty Name="ContractStatusCode" ColumnName="ContractStatusCode" />
-                <ScalarProperty Name="PolicyStatus" ColumnName="PolicyStatus" />
                 <ScalarProperty Name="ETLDate" ColumnName="ETLDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tbl_Category">
-            <EntityTypeMapping TypeName="SunnyDBModel.tbl_Category">
-              <MappingFragment StoreEntitySet="tbl_Category">
-                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
-                <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tbl_Employee">
-            <EntityTypeMapping TypeName="SunnyDBModel.tbl_Employee">
-              <MappingFragment StoreEntitySet="tbl_Employee">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Emp_Name" ColumnName="Emp_Name" />
-                <ScalarProperty Name="Emp_Department" ColumnName="Emp_Department" />
-                <ScalarProperty Name="Emp_Salary" ColumnName="Emp_Salary" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
-                <ScalarProperty Name="CreateOn" ColumnName="CreateOn" />
-                <ScalarProperty Name="EditBy" ColumnName="EditBy" />
-                <ScalarProperty Name="EditOn" ColumnName="EditOn" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tbl_Items">
-            <EntityTypeMapping TypeName="SunnyDBModel.tbl_Items">
-              <MappingFragment StoreEntitySet="tbl_Items">
-                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
-                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
-                <ScalarProperty Name="ItemName" ColumnName="ItemName" />
-                <ScalarProperty Name="Rate" ColumnName="Rate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tbl_OrderDetails">
-            <EntityTypeMapping TypeName="SunnyDBModel.tbl_OrderDetails">
-              <MappingFragment StoreEntitySet="tbl_OrderDetails">
-                <ScalarProperty Name="DetailId" ColumnName="DetailId" />
-                <ScalarProperty Name="OrderNo" ColumnName="OrderNo" />
-                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
-                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
-                <ScalarProperty Name="Qty" ColumnName="Qty" />
-                <ScalarProperty Name="Rate" ColumnName="Rate" />
-                <ScalarProperty Name="ItemTotal" ColumnName="ItemTotal" />
-                <ScalarProperty Name="CreateOn" ColumnName="CreateOn" />
-                <ScalarProperty Name="EditOn" ColumnName="EditOn" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tbl_OrderList">
-            <EntityTypeMapping TypeName="SunnyDBModel.tbl_OrderList">
-              <MappingFragment StoreEntitySet="tbl_OrderList">
-                <ScalarProperty Name="OrderNo" ColumnName="OrderNo" />
-                <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
-                <ScalarProperty Name="OrderTotal" ColumnName="OrderTotal" />
-                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
-                <ScalarProperty Name="CreateOn" ColumnName="CreateOn" />
-                <ScalarProperty Name="EditOn" ColumnName="EditOn" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="VW_Test">
-            <EntityTypeMapping TypeName="SunnyDBModel.VW_Test">
-              <MappingFragment StoreEntitySet="VW_Test">
-                <ScalarProperty Name="UniqID" ColumnName="UniqID" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="LoginId" ColumnName="LoginId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <FunctionImportMapping FunctionName="SunnyDBModel.Store.FN_TEST" FunctionImportName="FN_TEST">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="SunnyDBModel.FN_TEST_Result">
-                <ScalarProperty Name="ColumnName" ColumnName="ColumnName" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="SP_GET_ORDER_DETAILS" FunctionName="SunnyDBModel.Store.SP_GET_ORDER_DETAILS">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="SunnyDBModel.SP_GET_ORDER_DETAILS_Result">
-                <ScalarProperty Name="OrderNo" ColumnName="OrderNo" />
-                <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
-                <ScalarProperty Name="OrderTotal" ColumnName="OrderTotal" />
-                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
-                <ScalarProperty Name="DetailId" ColumnName="DetailId" />
-                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
-                <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
-                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
-                <ScalarProperty Name="ItemName" ColumnName="ItemName" />
-                <ScalarProperty Name="Qty" ColumnName="Qty" />
-                <ScalarProperty Name="Rate" ColumnName="Rate" />
-                <ScalarProperty Name="ItemTotal" ColumnName="ItemTotal" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="SP_GetPolicyDetails" FunctionName="SunnyDBModel.Store.SP_GetPolicyDetails">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="SunnyDBModel.SP_GetPolicyDetails_Result">
-                <ScalarProperty Name="PolicyKey" ColumnName="PolicyKey" />
-                <ScalarProperty Name="ContractNumber" ColumnName="ContractNumber" />
-                <ScalarProperty Name="CustomerCode" ColumnName="CustomerCode" />
-                <ScalarProperty Name="RiskCommencementDate" ColumnName="RiskCommencementDate" />
-                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
-                <ScalarProperty Name="MaturityDate" ColumnName="MaturityDate" />
-                <ScalarProperty Name="NextRenewalDue" ColumnName="NextRenewalDue" />
-                <ScalarProperty Name="SumAssuredAmount" ColumnName="SumAssuredAmount" />
-                <ScalarProperty Name="PremiumAmount" ColumnName="PremiumAmount" />
-                <ScalarProperty Name="ContractStatusCode" ColumnName="ContractStatusCode" />
                 <ScalarProperty Name="PolicyStatus" ColumnName="PolicyStatus" />
-                <ScalarProperty Name="ETLDate" ColumnName="ETLDate" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
+                <ScalarProperty Name="ContractStatusCode" ColumnName="ContractStatusCode" />
+                <ScalarProperty Name="PremiumAmount" ColumnName="PremiumAmount" />
+                <ScalarProperty Name="SumAssuredAmount" ColumnName="SumAssuredAmount" />
+                <ScalarProperty Name="NextRenewalDue" ColumnName="NextRenewalDue" />
+                <ScalarProperty Name="MaturityDate" ColumnName="MaturityDate" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="RiskCommencementDate" ColumnName="RiskCommencementDate" />
+                <ScalarProperty Name="CustomerCode" ColumnName="CustomerCode" />
+                <ScalarProperty Name="ContractNumber" ColumnName="ContractNumber" />
+                <ScalarProperty Name="PolicyKey" ColumnName="PolicyKey" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="PolicyTransactions">
-            <EntityTypeMapping TypeName="SunnyDBModel.PolicyTransaction">
+            <EntityTypeMapping TypeName="TransactionDBModel.PolicyTransaction">
               <MappingFragment StoreEntitySet="PolicyTransaction">
                 <ScalarProperty Name="EditDate" ColumnName="EditDate" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
@@ -703,29 +270,18 @@ warning 6002: The table/view 'SunnyDB.dbo.VW_Test' does not have a primary key d
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="SP_GetPolicyTransaction" FunctionName="SunnyDBModel.Store.SP_GetPolicyTransaction">
+          <FunctionImportMapping FunctionImportName="Proc_GetAccountTransactionDetails" FunctionName="TransactionDBModel.Store.Proc_GetAccountTransactionDetails">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="SunnyDBModel.SP_GetPolicyTransaction_Result">
-                <ScalarProperty Name="PolicyNo" ColumnName="PolicyNo" />
-                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
-                <ScalarProperty Name="PremiumAmount" ColumnName="PremiumAmount" />
-                <ScalarProperty Name="PremiumDate" ColumnName="PremiumDate" />
-                <ScalarProperty Name="PolicyStatus" ColumnName="PolicyStatus" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+              <ComplexTypeMapping TypeName="TransactionDBModel.Proc_GetAccountTransactionDetails_Result">
+                <ScalarProperty Name="TransactionId" ColumnName="TransactionId" />
+                <ScalarProperty Name="AccountNo" ColumnName="AccountNo" />
+                <ScalarProperty Name="TransDate" ColumnName="TransDate" />
+                <ScalarProperty Name="Details" ColumnName="Details" />
+                <ScalarProperty Name="Debit" ColumnName="Debit" />
+                <ScalarProperty Name="Credit" ColumnName="Credit" />
+                <ScalarProperty Name="Balance" ColumnName="Balance" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="EditDate" ColumnName="EditDate" />
-                <ScalarProperty Name="PolicyKey" ColumnName="PolicyKey" />
-                <ScalarProperty Name="ContractNumber" ColumnName="ContractNumber" />
-                <ScalarProperty Name="CustomerCode" ColumnName="CustomerCode" />
-                <ScalarProperty Name="RiskCommencementDate" ColumnName="RiskCommencementDate" />
-                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
-                <ScalarProperty Name="MaturityDate" ColumnName="MaturityDate" />
-                <ScalarProperty Name="NextRenewalDue" ColumnName="NextRenewalDue" />
-                <ScalarProperty Name="SumAssuredAmount" ColumnName="SumAssuredAmount" />
-                <ScalarProperty Name="PDAmt" ColumnName="PDAmt" />
-                <ScalarProperty Name="ContractStatusCode" ColumnName="ContractStatusCode" />
-                <ScalarProperty Name="PD_Status" ColumnName="PD_Status" />
-                <ScalarProperty Name="ETLDate" ColumnName="ETLDate" />
-                <ScalarProperty Name="dataByC_ID" ColumnName="dataByC_ID" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

@@ -18,6 +18,6 @@ namespace PolicyDetails_WebApplication.Models
     public class GetPolicyTransactionResponse
     {
         public int Status { get; set; }
-        public List<CustomerDetails> customerDetails { get; set; }
+        public AccountDetail customerDetails { get; set; }
     }
 }

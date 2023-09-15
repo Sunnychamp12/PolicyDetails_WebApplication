@@ -12,14 +12,18 @@ namespace PolicyDetails_WebApplication
     using System;
     using System.Collections.Generic;
     
-    public partial class PolicyTransaction
+    public partial class tbl_Transaction
     {
-        public int PolicyNo { get; set; }
-        public int CustomerId { get; set; }
-        public Nullable<decimal> PremiumAmount { get; set; }
-        public System.DateTime PremiumDate { get; set; }
-        public string PolicyStatus { get; set; }
-        public Nullable<System.DateTime> CreatedDate { get; set; }
+        public int TransactionId { get; set; }
+        public Nullable<int> AccountNo { get; set; }
+        public Nullable<System.DateTime> TransDate { get; set; }
+        public string Details { get; set; }
+        public Nullable<decimal> Debit { get; set; }
+        public Nullable<decimal> Credit { get; set; }
+        public Nullable<decimal> Balance { get; set; }
+        public Nullable<System.DateTime> CreateDate { get; set; }
         public Nullable<System.DateTime> EditDate { get; set; }
+    
+        public virtual tbl_AccountDetails tbl_AccountDetails { get; set; }
     }
 }

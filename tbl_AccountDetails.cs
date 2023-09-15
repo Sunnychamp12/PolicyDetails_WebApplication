@@ -12,18 +12,24 @@ namespace PolicyDetails_WebApplication
     using System;
     using System.Collections.Generic;
     
-    public partial class tbl_Category
+    public partial class tbl_AccountDetails
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public tbl_Category()
+        public tbl_AccountDetails()
         {
-            this.tbl_Items = new HashSet<tbl_Items>();
+            this.tbl_Transaction = new HashSet<tbl_Transaction>();
         }
     
-        public int CategoryId { get; set; }
-        public string CategoryName { get; set; }
+        public int AccountNo { get; set; }
+        public string AccountName { get; set; }
+        public string Address { get; set; }
+        public string AccountDescription { get; set; }
+        public string Branch { get; set; }
+        public string IFSCode { get; set; }
+        public Nullable<System.DateTime> CreateDate { get; set; }
+        public Nullable<System.DateTime> EditDate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tbl_Items> tbl_Items { get; set; }
+        public virtual ICollection<tbl_Transaction> tbl_Transaction { get; set; }
     }
 }

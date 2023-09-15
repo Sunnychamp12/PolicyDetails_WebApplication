@@ -19,8 +19,8 @@ namespace PolicyDetails_WebApplication.Controllers
         private bool isValid = false;
         private string headerToken = string.Empty;
         private readonly string _strToken = "c06fc4189a5645e4a4fd480e8b1556e7";
-        private readonly string _strAppName = "PolicyDetails";
-        private readonly SunnyDBEntities _dbContext;
+        private readonly string _strAppName = "TransactionDetails";
+        private readonly TransactionDBEntities _dbContext;
         #endregion
 
         #region "Constructor"
@@ -28,7 +28,7 @@ namespace PolicyDetails_WebApplication.Controllers
         {
             if (_dbContext == null)
             {
-                _dbContext = new SunnyDBEntities();
+                _dbContext = new TransactionDBEntities();
             }
         }
         #endregion
@@ -209,10 +209,10 @@ namespace PolicyDetails_WebApplication.Controllers
         }
         #endregion
 
-        #region "Get Policy Transaction"
+        #region "Get Account Transaction"
         [HttpPost]
-        [Route("GetPolicyTransaction")]
-        public HttpResponseMessage GetPolicyTransaction([FromBody] PolicyTransactionRequest paramPolicyData)
+        [Route("GetAccountTransaction")]
+        public HttpResponseMessage GetAccountTransaction([FromBody] AccountTransactionRequest paramRequestData)
         {
             GetPolicyTransactionResponse successResponse = new GetPolicyTransactionResponse();
             ErrorResponse errorResponse = new ErrorResponse();
@@ -225,41 +225,34 @@ namespace PolicyDetails_WebApplication.Controllers
                     isValid = (headerToken == _strToken);
                     if (isValid && APPName == _strAppName)
                     {
-                        List<SP_GetPolicyTransaction_Result> _objPolicyTransation = _dbContext.SP_GetPolicyTransaction(paramPolicyData.PolicyNo, paramPolicyData.StartDate, paramPolicyData.EndDate).ToList<SP_GetPolicyTransaction_Result>();
-                        if (_objPolicyTransation != null)
+                        tbl_AccountDetails _objAccountDetails = _dbContext.tbl_AccountDetails.FirstOrDefault(x => x.AccountNo == paramRequestData.AccountNo);
+                        List<Proc_GetAccountTransactionDetails_Result> _objProc_GTD = _dbContext.Proc_GetAccountTransactionDetails(paramRequestData.AccountNo, paramRequestData.StartDate, paramRequestData.EndDate).ToList<Proc_GetAccountTransactionDetails_Result>();
+                        if (_objAccountDetails != null)
                         {
-                            successResponse.customerDetails = new List<CustomerDetails>();
-                            foreach (var getCustomerDetails in _objPolicyTransation.Distinct())
+                            successResponse.customerDetails = new AccountDetail();
+                            AccountDetail customerDetails = new AccountDetail();
+                            successResponse.customerDetails.AccountNo = _objAccountDetails.AccountNo;
+                            successResponse.customerDetails.AccountName = _objAccountDetails.AccountName;
+                            successResponse.customerDetails.Address = _objAccountDetails.Address;
+                            successResponse.customerDetails.AccountDescription = _objAccountDetails.AccountDescription;
+                            successResponse.customerDetails.OpeningBalance = _objProc_GTD != null && _objProc_GTD.Count > 0 ? (_objProc_GTD.FirstOrDefault().Debit > 0 ?
+                                        _objProc_GTD.FirstOrDefault().Balance + _objProc_GTD.FirstOrDefault().Debit : _objProc_GTD.FirstOrDefault().Balance - _objProc_GTD.FirstOrDefault().Credit) : 0;
+                            successResponse.customerDetails.ClosingBalance = _objProc_GTD != null && _objProc_GTD.Count > 0 ? _objProc_GTD.OrderByDescending(s => s.TransDate).FirstOrDefault().Balance : 0;
+                            successResponse.customerDetails.Branch = _objAccountDetails.Branch;
+                            successResponse.customerDetails.IFSCode = _objAccountDetails.IFSCode;
+                            successResponse.customerDetails.Transactions =  new List<Transaction>();
+                            if (_objProc_GTD != null && _objProc_GTD.Count > 0)
                             {
-                                if (successResponse.customerDetails != null && !successResponse.customerDetails.Any(C => C.CustomerId == getCustomerDetails.CustomerId))
+                                foreach (var Item_Trans in _objProc_GTD)
                                 {
-                                    CustomerDetails customerDetails = new CustomerDetails();
-                                    customerDetails.CustomerId = getCustomerDetails.CustomerId;
-                                    customerDetails.PremiumDate = getCustomerDetails.PremiumDate;
-                                    customerDetails.PolicyNo = getCustomerDetails.PolicyNo;
-                                    customerDetails.PremiumAmount = getCustomerDetails.PremiumAmount;
-                                    customerDetails.PolicyStatus = getCustomerDetails.PolicyStatus;
-                                    customerDetails.policyDetails = new List<PolicyData>();
-                                    successResponse.customerDetails.Add(customerDetails);
-                                }
-                            }
-                            foreach (var item in successResponse.customerDetails)
-                            {
-                                foreach (var getPolicyDetails in _objPolicyTransation.Where(C => C.CustomerId == item.CustomerId).ToList())
-                                {
-                                    PolicyData policyDetails = new PolicyData();
-                                    policyDetails.ContractNumber = getPolicyDetails.ContractNumber;
-                                    policyDetails.CustomerCode = getPolicyDetails.CustomerCode;
-                                    policyDetails.RiskCommencementDate = getPolicyDetails.RiskCommencementDate;
-                                    policyDetails.ProductName = getPolicyDetails.ProductName;
-                                    policyDetails.MaturityDate = getPolicyDetails.MaturityDate;
-                                    policyDetails.NextRenewalDue = getPolicyDetails.NextRenewalDue;
-                                    policyDetails.SumAssuredAmount = getPolicyDetails.SumAssuredAmount;
-                                    policyDetails.PremiumAmount = getPolicyDetails.PremiumAmount;
-                                    policyDetails.ContractStatusCode = getPolicyDetails.ContractStatusCode;
-                                    policyDetails.PolicyStatus = getPolicyDetails.PolicyStatus;
-                                    policyDetails.ETLDate = getPolicyDetails.ETLDate;
-                                    item.policyDetails.Add(policyDetails);
+                                    Transaction _objTransaction = new Transaction();
+                                    _objTransaction.TransactionId = Item_Trans.TransactionId;
+                                    _objTransaction.TransDate = Item_Trans.TransDate;
+                                    _objTransaction.Details = Item_Trans.Details;
+                                    _objTransaction.Debit = Item_Trans.Debit;
+                                    _objTransaction.Credit = Item_Trans.Credit;
+                                    _objTransaction.Balance = Item_Trans.Balance;
+                                    successResponse.customerDetails.Transactions.Add(_objTransaction);
                                 }
                             }
                             successResponse.Status = (int)Enums.Enums.statusCode.Success;
@@ -268,8 +261,8 @@ namespace PolicyDetails_WebApplication.Controllers
                         else
                         {
                             errorResponse.Status = (int)Enums.Enums.statusCode.Error;
-                            errorResponse.Message = "Customers policy transaction details not found";
-                            return Request.CreateResponse(HttpStatusCode.OK, errorResponse);
+                            errorResponse.Message = "Customers account details not found";
+                            return Request.CreateResponse(HttpStatusCode.NotFound, errorResponse);
                         }
                     }
                     else

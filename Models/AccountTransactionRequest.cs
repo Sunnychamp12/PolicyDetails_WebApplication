@@ -6,10 +6,10 @@ using System.Web;
 
 namespace PolicyDetails_WebApplication.Models
 {
-    public class PolicyTransactionRequest
+    public class AccountTransactionRequest
     {
         [Required]
-        public int PolicyNo { get; set; }
+        public int AccountNo { get; set; }
 
         [Required]
         public DateTime StartDate { get; set; }
