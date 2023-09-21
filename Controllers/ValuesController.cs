@@ -66,7 +66,7 @@ namespace PolicyDetails_WebApplication.Controllers
                 {
                     errorResponse.Status = (int)Enums.Enums.statusCode.Error;
                     errorResponse.Message = "Invalid API Key";
-                    return Request.CreateResponse(HttpStatusCode.NoContent, errorResponse);
+                    return Request.CreateResponse(HttpStatusCode.Unauthorized, errorResponse);
                 }
             }
             catch (Exception ex)
@@ -118,7 +118,7 @@ namespace PolicyDetails_WebApplication.Controllers
                 {
                     errorResponse.Status = (int)Enums.Enums.statusCode.Success;
                     errorResponse.Message = "Invalid API Key";
-                    return Request.CreateResponse(HttpStatusCode.NoContent, errorResponse);
+                    return Request.CreateResponse(HttpStatusCode.Unauthorized, errorResponse);
                 }
             }
             catch (Exception ex)
@@ -160,7 +160,7 @@ namespace PolicyDetails_WebApplication.Controllers
                 {
                     errorResponse.Status = (int)Enums.Enums.statusCode.Error;
                     errorResponse.Message = "Invalid API Key";
-                    return Request.CreateResponse(HttpStatusCode.NoContent, errorResponse);
+                    return Request.CreateResponse(HttpStatusCode.Unauthorized, errorResponse);
                 }
             }
             catch (Exception ex)
@@ -192,14 +192,14 @@ namespace PolicyDetails_WebApplication.Controllers
                     {
                         response.Status = (int)Enums.Enums.statusCode.Error;
                         response.Message = "Invalid customer code";
-                        return Request.CreateResponse(HttpStatusCode.NoContent, response);
+                        return Request.CreateResponse(HttpStatusCode.NotFound, response);
                     }
                 }
                 else
                 {
                     response.Status = (int)Enums.Enums.statusCode.Error;
                     response.Message = "Invalid API Key";
-                    return Request.CreateResponse(HttpStatusCode.NoContent, response);
+                    return Request.CreateResponse(HttpStatusCode.Unauthorized, response);
                 }
             }
             catch (Exception ex)
