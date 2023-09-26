@@ -7,9 +7,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Data.Entity.Core.Objects;
 
 namespace PolicyDetails_WebApplication.Controllers
 {
@@ -21,6 +18,7 @@ namespace PolicyDetails_WebApplication.Controllers
         private readonly string _strToken = "c06fc4189a5645e4a4fd480e8b1556e7";
         private readonly string _strAppName = "TransactionDetails";
         private readonly TransactionDBEntities _dbContext;
+        private SqlParameter[] _objSqlParameters = null;
         #endregion
 
         #region "Constructor"
@@ -183,7 +181,8 @@ namespace PolicyDetails_WebApplication.Controllers
                 isValid = (headerToken == _strToken);
                 if (isValid && APPName == _strAppName)
                 {
-                    _dtPolicyDetails = Common.getPolicyDataList(Customer_Code);
+                    _objSqlParameters = new SqlParameter[] { new SqlParameter("@CustoemerCode", Customer_Code) };
+                    _dtPolicyDetails = Common.getPolicyDataList(_objSqlParameters, "SP_GetPolicyDetails");
                     successResponse.PolicyDetails = Common.ConvertDataTable<PolicyData>(_dtPolicyDetails);
                     successResponse.Status = (int)Enums.Enums.statusCode.Success;
                     if (successResponse.PolicyDetails != null && successResponse.PolicyDetails.Count > 0)

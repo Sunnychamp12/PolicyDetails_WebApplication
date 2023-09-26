@@ -10,17 +10,19 @@ namespace PolicyDetails_WebApplication.Models
 {
     public class Common
     {
-        public static DataTable getPolicyDataList(string paramPolicyCode)
+        public static string cnnString = "Server= (local)\\SQLEXPRESS;DataBase=SunnyDB;trusted_connection=True;Encrypt=False;MultipleActiveResultSets=True;";
+        public DataTable _dt = new DataTable();
+        public static DataTable getPolicyDataList(SqlParameter[] paramSqlParam, string paramProcedure)
         {
             DataTable _dt = new DataTable();
-            string cnnString = "Server= (local)\\SQLEXPRESS;DataBase=SunnyDB;trusted_connection=True;Encrypt=False;MultipleActiveResultSets=True;";
-
             SqlConnection cnn = new SqlConnection(cnnString);
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = cnn;
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add(new SqlParameter("@CustoemerCode", paramPolicyCode));
-            cmd.CommandText = "SP_GetPolicyDetails";
+            if (paramSqlParam != null)
+                foreach (var item in paramSqlParam)
+                    cmd.Parameters.Add(new SqlParameter(item.ParameterName, item.Value));
+            cmd.CommandText = paramProcedure;
             cnn.Open();
             SqlDataAdapter adapter = new SqlDataAdapter(cmd);
             adapter.Fill(_dt);

@@ -14,6 +14,7 @@ namespace PolicyDetails_WebApplication.Controllers
 {
     public class PolicyController : Controller
     {
+        private SqlParameter[] _objSqlParameters = null;
         // GET: Policy
         [HttpGet]
         [HttpHead]
@@ -29,7 +30,7 @@ namespace PolicyDetails_WebApplication.Controllers
                 bool isValid = (headerToken == "c06fc4189a5645e4a4fd480e8b1556e7");
                 if (isValid && APPName == "PolicyDetails")
                 {
-                    _dtPolicyDetails = Common.getPolicyDataList("");
+                    _dtPolicyDetails = Common.getPolicyDataList(_objSqlParameters, "SP_GetPolicyDetails");
                     successResponse.PolicyDetails = Common.ConvertDataTable<PolicyData>(_dtPolicyDetails);
                     successResponse.Status = 1;
                     if (successResponse.PolicyDetails != null && successResponse.PolicyDetails.Count > 0)
